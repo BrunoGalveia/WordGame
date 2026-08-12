@@ -1,0 +1,22 @@
+# .NET
+server/**/bin/
+server/**/obj/
+*.user
+.vs/
+
+# Node / Vite (client)
+client/node_modules/
+client/dist/
+client/.vite/
+*.tsbuildinfo
+
+# Logs
+*.log
+npm-debug.log*
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Claude Code local config (machine-specific, not shared)
+.claude/

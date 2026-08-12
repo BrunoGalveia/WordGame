@@ -1,0 +1,161 @@
+#root {
+  width: 480px;
+  max-width: 100%;
+  margin: 0 auto;
+  min-height: 100svh;
+  padding: 24px 16px 48px;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+}
+
+button {
+  font: inherit;
+  background: var(--accent);
+  color: #fff;
+  border: none;
+  border-radius: 10px;
+  padding: 14px 20px;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+button:disabled {
+  opacity: 0.5;
+  cursor: default;
+}
+
+input {
+  font: inherit;
+  padding: 12px 14px;
+  border-radius: 10px;
+  border: 1px solid var(--border);
+  background: var(--bg);
+  color: var(--text-h);
+}
+
+.home {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  text-align: center;
+  margin-top: 15vh;
+}
+
+.join-form {
+  display: flex;
+  gap: 8px;
+  margin-top: 8px;
+}
+
+.join-form input {
+  flex: 1;
+  text-transform: uppercase;
+  text-align: center;
+}
+
+.fallback {
+  margin-top: 24px;
+  font-size: 15px;
+}
+
+.nickname-form {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  margin-top: 24px;
+}
+
+.nickname-form label {
+  font-weight: 600;
+  color: var(--text-h);
+}
+
+.room {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+.room-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.room-code-label {
+  display: block;
+  font-size: 13px;
+  color: var(--text);
+}
+
+.room-code {
+  display: block;
+  font-size: 32px;
+  font-weight: 700;
+  letter-spacing: 4px;
+  color: var(--text-h);
+}
+
+.players ul {
+  list-style: none;
+  padding: 0;
+  margin: 8px 0 0;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.players li {
+  background: var(--code-bg);
+  border-radius: 999px;
+  padding: 6px 14px;
+  font-size: 14px;
+}
+
+.card {
+  border-radius: 16px;
+  padding: 32px 20px;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.card.word {
+  background: var(--accent-bg);
+  border: 1px solid var(--accent-border);
+}
+
+.card.hint {
+  background: var(--code-bg);
+  border: 1px solid var(--border);
+}
+
+.card .label {
+  font-size: 14px;
+  color: var(--text);
+}
+
+.card .content {
+  font-size: 28px;
+  font-weight: 700;
+  color: var(--text-h);
+}
+
+.waiting {
+  text-align: center;
+  color: var(--text);
+  padding: 32px 0;
+}
+
+.new-word {
+  align-self: stretch;
+  padding: 18px;
+  font-size: 17px;
+}
+
+.error {
+  color: #e5484d;
+}
