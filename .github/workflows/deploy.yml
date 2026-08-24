@@ -1,0 +1,63 @@
+name: Deploy to IIS
+
+on:
+  push:
+    branches: [main, master]
+  workflow_dispatch: {}
+
+concurrency:
+  group: deploy-production
+  cancel-in-progress: false
+
+env:
+  DOTNET_NOLOGO: true
+  DOTNET_CLI_TELEMETRY_OPTOUT: true
+  # Non-secret: baked into the frontend bundle at build time, so it must point at wherever
+  # the backend IIS site is actually reachable. Set it in
+  # Settings -> Secrets and variables -> Actions -> Variables -> PROD_API_URL.
+  VITE_API_URL: ${{ vars.PROD_API_URL || 'http://localhost:5216' }}
+
+jobs:
+  deploy:
+    runs-on: self-hosted
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: "9.0.x"
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+          cache: npm
+          cache-dependency-path: client/package-lock.json
+
+      - name: Restore .NET solution
+        run: dotnet restore WordGame.sln
+
+      - name: Publish backend
+        run: dotnet publish server/WordGame.Api/WordGame.Api.csproj -c Release -o publish/api --no-restore
+
+      - name: Install frontend dependencies
+        working-directory: client
+        run: npm ci
+
+      - name: Build frontend
+        working-directory: client
+        run: npm run build
+
+      - name: Apply database migrations
+        shell: pwsh
+        run: ./scripts/Deploy-Database.ps1 -ConnectionString "${{ secrets.PROD_DB_CONNECTION_STRING }}"
+
+      - name: Deploy backend to IIS
+        shell: pwsh
+        run: ./scripts/Deploy-Backend.ps1 -SourcePath "publish/api" -AppPoolName "WordGame-Api" -PhysicalPath "C:\inetpub\wwwroot\wordgame-api"
+
+      - name: Deploy frontend to IIS
+        shell: pwsh
+        run: ./scripts/Deploy-Frontend.ps1 -SourcePath "client/dist" -AppPoolName "WordGame-Web" -PhysicalPath "C:\inetpub\wwwroot\wordgame-web"

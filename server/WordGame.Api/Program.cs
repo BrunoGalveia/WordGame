@@ -7,7 +7,7 @@ using WordGame.Infrastructure.Persistence;
 
 var builder = WebApplication.CreateBuilder(args);
 
-const string DevCorsPolicy = "DevCors";
+const string CorsPolicy = "Frontend";
 
 builder.Services.AddOpenApi();
 builder.Services.AddSignalR();
@@ -15,11 +15,16 @@ builder.Services.AddSignalR();
 builder.Services.AddApplication();
 builder.Services.AddInfrastructure(builder.Configuration);
 
+// The frontend's origin(s) — defaults to the Vite dev server; override in production via
+// appsettings.Production.json or the Cors__AllowedOrigins__0 environment variable.
+var allowedOrigins = builder.Configuration.GetSection("Cors:AllowedOrigins").Get<string[]>()
+    ?? ["http://localhost:5173"];
+
 builder.Services.AddCors(options =>
 {
-    options.AddPolicy(DevCorsPolicy, policy =>
+    options.AddPolicy(CorsPolicy, policy =>
     {
-        policy.WithOrigins("http://localhost:5173")
+        policy.WithOrigins(allowedOrigins)
             .AllowAnyHeader()
             .AllowAnyMethod()
             .AllowCredentials();
@@ -39,7 +44,7 @@ if (app.Environment.IsDevelopment())
     await WordSeeder.SeedAsync(db);
 }
 
-app.UseCors(DevCorsPolicy);
+app.UseCors(CorsPolicy);
 app.UseHttpsRedirection();
 
 app.MapPost("/api/rooms", (IRoomService roomService) => Results.Ok(roomService.CreateRoom()));
