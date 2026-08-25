@@ -44,3 +44,4 @@ finally {
 }
 
 Write-Host "==> Frontend deployed to '$PhysicalPath'."
+$global:LASTEXITCODE = 0
