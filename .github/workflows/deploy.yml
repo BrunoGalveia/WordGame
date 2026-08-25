@@ -32,7 +32,10 @@ jobs:
       - name: Setup Node
         uses: actions/setup-node@v4
         with:
-          node-version: "22"
+          # Keep this aligned with the Node major version used to generate
+          # client/package-lock.json (currently regenerated on Node 25) — a mismatch
+          # can make `npm ci` reject the lock file over optional/native dependencies.
+          node-version: "25"
           cache: npm
           cache-dependency-path: client/package-lock.json
 
