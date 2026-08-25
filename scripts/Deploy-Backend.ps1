@@ -49,3 +49,4 @@ finally {
 }
 
 Write-Host "==> Backend deployed to '$PhysicalPath'."
+$global:LASTEXITCODE = 0
