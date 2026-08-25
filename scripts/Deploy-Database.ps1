@@ -17,6 +17,12 @@ param(
 $ErrorActionPreference = "Stop"
 $repoRoot = Split-Path -Parent $PSScriptRoot
 
+if ([string]::IsNullOrWhiteSpace($ConnectionString)) {
+    throw "ConnectionString is empty. In CI this means the 'PROD_DB_CONNECTION_STRING' " +
+        "secret isn't set on the GitHub repo (Settings -> Secrets and variables -> Actions " +
+        "-> Secrets -> New repository secret). See DEPLOY.md section 3."
+}
+
 if (-not (Get-Command dotnet-ef -ErrorAction SilentlyContinue)) {
     Write-Host "==> dotnet-ef not found, installing it as a global tool..."
     dotnet tool install --global dotnet-ef

@@ -54,13 +54,13 @@ jobs:
         run: npm run build
 
       - name: Apply database migrations
-        shell: pwsh
+        shell: powershell
         run: ./scripts/Deploy-Database.ps1 -ConnectionString "${{ secrets.PROD_DB_CONNECTION_STRING }}"
 
       - name: Deploy backend to IIS
-        shell: pwsh
+        shell: powershell
         run: ./scripts/Deploy-Backend.ps1 -SourcePath "publish/api" -AppPoolName "WordGame-Api" -PhysicalPath "C:\inetpub\wwwroot\wordgame-api"
 
       - name: Deploy frontend to IIS
-        shell: pwsh
+        shell: powershell
         run: ./scripts/Deploy-Frontend.ps1 -SourcePath "client/dist" -AppPoolName "WordGame-Web" -PhysicalPath "C:\inetpub\wwwroot\wordgame-web"
