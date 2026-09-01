@@ -56,6 +56,13 @@ jobs:
         working-directory: client
         run: npm run build
 
+      - name: Check built API URL
+        working-directory: client
+        shell: powershell
+        run: |
+          Write-Host "Searching dist for API URL..."
+          Get-ChildItem -Path dist -Recurse -File | Select-String "${{ env.VITE_API_URL }}"
+
       - name: Apply database migrations
         shell: powershell
         run: ./scripts/Deploy-Database.ps1 -ConnectionString "${{ secrets.PROD_DB_CONNECTION_STRING }}"
